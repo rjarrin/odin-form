@@ -55,33 +55,84 @@ body {
     height: 40vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     font-weight: bold;
+    flex-direction: column;
+}
+
+.header-container p {
+    width: 70%;
+    font-size: large;
+}
+
+.form-container p {
+    font-weight: bold;
+}
+
+.header-container p,
+.account-container p,
+.form-container p,
+.account-container .create-account-btn {
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 20px;
 }
 
 .form-container {
     height: 30vh;
-    background-color: aqua;
+    background-color: rgb(255, 255, 255);
 }
 
 .account-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     background-color: lightgray;
+    height: 30vh;
 }
 
 .create-account-btn {
-    background-color: green;
+    background-color: rgb(16, 107, 16);
     color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin: 10px 20px;
+    border-radius: 5px;
 }
 
 .login-link {
     color: green;
     text-decoration: none;
     font-weight: bold;
+}
+
+.form-container form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: auto 20px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-row label {
+    margin-bottom: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+
+.form-row input {
+    width: 100%;
+    border-radius: 5px;
 }
