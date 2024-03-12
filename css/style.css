@@ -144,4 +144,5 @@ body {
     border-color: rgb(18, 144, 207);
     outline: none;
     box-shadow: 0 0 0 1px rgb(18, 144, 207);
+    background: lightblue;
 }

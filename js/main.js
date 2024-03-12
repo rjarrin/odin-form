@@ -1,3 +1,36 @@
+function handleFormSubmission(event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+    console.log("Submitted hit");
+    // Retrieve values of the password and confirm password fields
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
+    // Check if the passwords match
+    if (password !== confirmPassword) {
+        // Outline fields in red
+        passwordInput.style.borderColor = "red";
+        confirmPasswordInput.style.borderColor = "red";
+        // Create a span element for the message
+        const message = document.createElement("span");
+        message.textContent = "* Passwords do not match";
+        message.style.color = "red";
+        message.style.fontSize = "small";
+        // Append the message to the confirm password input's parent
+        confirmPasswordInput.parentNode.appendChild(message);
+    } else {
+        console.log("Passwords match");
+        // If passwords match, remove any existing message
+        const existingMessage = document.querySelector(".form-container span");
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        passwordInput.style.borderColor = "";
+        confirmPasswordInput.style.borderColor = "";
+    }
+}
+
 function createForm() {
     // Select the form container
     const formContainer = document.querySelector(".form-container");
@@ -40,6 +73,10 @@ function createForm() {
         input.type = field.type;
         input.id = field.id;
         input.name = field.id;
+        // Ensure the appropriate fields are required
+        if (field.label == "First Name") {
+            input.required = true;
+        }
         // Append label and input field to the form
         formRow.appendChild(label);
         formRow.appendChild(input);
@@ -53,6 +90,10 @@ function createForm() {
     form.appendChild(leftColumn);
     form.appendChild(rightColumn);
     formContainer.appendChild(form);
+
+    const createAccountBtn = document.querySelector(".create-account-btn");
+    createAccountBtn.addEventListener("click", handleFormSubmission);
+    form.addEventListener("submit", handleFormSubmission);
 }
 
 // Select the overlay div
