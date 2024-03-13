@@ -1,33 +1,96 @@
+function validateNames(name) {
+    const nameRegex = /^[A-Z][a-z]*$/;
+    return nameRegex.test(name);
+}
+
+function validatePhoneNumbers(phoneNumber) {
+    const phoneNumberRegex = /^\d{3}-\d{3}-\d{4}$/;
+    return phoneNumberRegex.test(phoneNumber);
+}
+
+function validatePasswords(password, confirmPassword) {
+    if ((password !== confirmPassword) || password === "" || confirmPassword === "") {
+        return false;
+    }
+    return true;
+}
+
 function handleFormSubmission(event) {
     // Prevent the default form submission behavior
     event.preventDefault();
     console.log("Submitted hit");
-    // Retrieve values of the password and confirm password fields
+    // Retrieve values of the input fields
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const phoneNumber = document.getElementById("phoneNumber").value;
+
     const passwordInput = document.getElementById("password");
     const confirmPasswordInput = document.getElementById("confirmPassword");
-    // Check if the passwords match
-    if (password !== confirmPassword) {
-        // Outline fields in red
+    const firstNameInput = document.getElementById("firstName");
+    const lastNameInput = document.getElementById("lastName");
+    const phoneNumberInput = document.getElementById("phoneNumber");
+
+    // Validate passwords
+    if(!validatePasswords(password, confirmPassword)) {
         passwordInput.style.borderColor = "red";
         confirmPasswordInput.style.borderColor = "red";
-        // Create a span element for the message
-        const message = document.createElement("span");
-        message.textContent = "* Passwords do not match";
-        message.style.color = "red";
-        message.style.fontSize = "small";
-        // Append the message to the confirm password input's parent
-        confirmPasswordInput.parentNode.appendChild(message);
+        // Check if the error message already exists
+        let existingMessage = document.getElementById("passwordMismatchMessage");
+        if (!existingMessage) {
+            // Create a span element for the message
+            const message = document.createElement("span");
+            message.textContent = "* Passwords do not match";
+            message.style.color = "red";
+            message.style.fontSize = "small";
+            // Assign id to message for future reference (and prevent multiple appends)
+            message.id = "passwordMismatchMessage";
+            // Append the message to the confirm password input's parent
+            confirmPasswordInput.parentNode.appendChild(message);
+        }
     } else {
-        console.log("Passwords match");
+        passwordInput.style.borderColor = "green";
+        confirmPasswordInput.style.borderColor = "green";
         // If passwords match, remove any existing message
-        const existingMessage = document.querySelector(".form-container span");
+        const existingMessage = document.getElementById("passwordMismatchMessage");
         if (existingMessage) {
             existingMessage.remove();
         }
-        passwordInput.style.borderColor = "";
-        confirmPasswordInput.style.borderColor = "";
+    }
+
+    // Validate names
+    if (!validateNames(firstName) || firstName === "") {
+        firstNameInput.style.borderColor = "red";
+    } else {
+        firstNameInput.style.borderColor = "green";
+    }
+
+    if (!validateNames(lastName) || lastName === "") {
+        lastNameInput.style.borderColor = "red";
+    } else {
+        lastNameInput.style.borderColor = "green";
+    }
+
+    // Validate phone number
+    if (!validatePhoneNumbers(phoneNumber)) {
+        phoneNumberInput.style.borderColor = "red";
+    } else {
+        phoneNumberInput.style.borderColor = "green";
+    }
+
+    // Retrieve email input field
+    const emailInput = document.getElementById("email");
+    if (!emailInput.checkValidity() || emailInput.value === "") {
+        emailInput.style.borderColor = "red";
+    } else {
+        emailInput.style.borderColor = "green";
+    }
+
+    // Check if all fields are valid
+    if (validateNames(firstName) && validateNames(lastName) && validatePhoneNumbers(phoneNumber) && emailInput.checkValidity() && validatePasswords(password, confirmPassword)) {
+        // If all fields are valid, show an alert
+        alert("All fields are valid!");
     }
 }
 
@@ -51,10 +114,10 @@ function createForm() {
 
     // Array of form fields
     const formFields = [
-        { label: "First Name", type: "text", id: "firstName"},
-        { label: "Last Name", type: "text", id: "lastName"},
-        { label: "Email", type: "email", id: "email"},
-        { label: "Phone Number", type: "tel", id: "phoneNumber"},
+        { label: "First Name", type: "text", id: "firstName", placeholder: "Enter your first name (John)"},
+        { label: "Last Name", type: "text", id: "lastName", placeholder: "Enter your last name (Smith)"},
+        { label: "Email", type: "email", id: "email", placeholder: "Enter your email address"},
+        { label: "Phone Number", type: "tel", id: "phoneNumber", placeholder: "123-123-1234"},
         { label: "Password", type: "password", id: "password"},
         { label: "Confirm Password", type: "password", id: "confirmPassword"}
     ];
@@ -73,10 +136,10 @@ function createForm() {
         input.type = field.type;
         input.id = field.id;
         input.name = field.id;
-        // Ensure the appropriate fields are required
-        if (field.label == "First Name") {
-            input.required = true;
+        if (field.placeholder) {
+            input.placeholder = field.placeholder;
         }
+        
         // Append label and input field to the form
         formRow.appendChild(label);
         formRow.appendChild(input);
